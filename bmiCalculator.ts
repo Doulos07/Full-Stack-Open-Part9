@@ -5,11 +5,14 @@ interface valuesBmi {
 
 const parsedArgumentBmi = (argument: string[]): valuesBmi => {
   if (argument.length < 4) throw new Error("Not enough arguments");
-
-  return {
-    height: Number(argument[2]),
-    weight: Number(argument[3]),
-  };
+  if (!isNaN(Number(argument[2])) && !isNaN(Number(argument[3]))) {
+    return {
+      height: Number(argument[2]),
+      weight: Number(argument[3]),
+    };
+  } else {
+    throw new Error("Provided values were not numbers!");
+  }
 };
 
 const calculateBmi = (height: number, weight: number): string => {
@@ -38,3 +41,5 @@ try {
 
   console.log(errorMessage);
 }
+
+export default calculateBmi;

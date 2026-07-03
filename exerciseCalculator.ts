@@ -17,10 +17,18 @@ const parsedArgumentExersice = (argument: string[]): valuesExersice => {
   if (argument.length < 4) throw new Error("Not enough arguments");
   // exerciseCalculator must accept inputs of different lengths.
 
-  return {
-    target: Number(argument[2]),
-    exercisesHours: argument.slice(3).map((arg) => Number(arg)),
-  };
+  const hours = argument.slice(3);
+  const validTarget = !isNaN(Number(argument[2]));
+  const validHours = hours.every((arg) => !isNaN(Number(arg)));
+
+  if (validTarget && validHours) {
+    return {
+      target: Number(argument[2]),
+      exercisesHours: hours.map((hour) => Number(hour)),
+    };
+  } else {
+    throw new Error("Provided values were not numbers!");
+  }
 };
 
 const calculateRating = (average: number, target: number): number => {
