@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
-    "noImplicitAny": false // no requiere tener tipos en todas las variables utilizadas
+    "noImplicitAny": false, // no requiere tener tipos en todas las variables utilizadas,
+    "types": ["node"]
   }
 }

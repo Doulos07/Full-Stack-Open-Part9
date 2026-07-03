@@ -8,6 +8,21 @@ interface ResultExercise {
   average: number;
 }
 
+interface valuesExersice {
+  exercisesHours: number[];
+  target: number;
+}
+
+const parsedArgumentExersice = (argument: string[]): valuesExersice => {
+  if (argument.length < 4) throw new Error("Not enough arguments");
+  // exerciseCalculator must accept inputs of different lengths.
+
+  return {
+    target: Number(argument[2]),
+    exercisesHours: argument.slice(3).map((arg) => Number(arg)),
+  };
+};
+
 const calculateRating = (average: number, target: number): number => {
   if (average >= target) {
     return 3;
@@ -47,7 +62,18 @@ const calculateExercises = (exercisesHours: number[], target: number): ResultExe
   };
 };
 
-const exercisesHours = [3, 0, 2, 4.5, 0, 3, 1];
-const target = 2;
+//const exercisesHours = [3, 0, 2, 4.5, 0, 3, 1];
+//const target = 2;
+// argument => 2 3 0 2 4.5 0 3 1
 
-console.log(calculateExercises(exercisesHours, target));
+try {
+  const { exercisesHours, target } = parsedArgumentExersice(process.argv);
+  console.log(calculateExercises(exercisesHours, target));
+} catch (error) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) {
+    errorMessage += `Error: ${error.message}`;
+  }
+
+  console.log(errorMessage);
+}

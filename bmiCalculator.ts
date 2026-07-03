@@ -1,3 +1,17 @@
+interface valuesBmi {
+  height: number;
+  weight: number;
+}
+
+const parsedArgumentBmi = (argument: string[]): valuesBmi => {
+  if (argument.length < 4) throw new Error("Not enough arguments");
+
+  return {
+    height: Number(argument[2]),
+    weight: Number(argument[3]),
+  };
+};
+
 const calculateBmi = (height: number, weight: number): string => {
   const heightMeter = height / 100;
   const bmi = weight / Math.pow(heightMeter, 2);
@@ -13,4 +27,14 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 };
 
-console.log(calculateBmi(180, 74));
+try {
+  const { height, weight } = parsedArgumentBmi(process.argv);
+  console.log(calculateBmi(height, weight));
+} catch (error) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) {
+    errorMessage += `Error: ${error.message}`;
+  }
+
+  console.log(errorMessage);
+}
