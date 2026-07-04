@@ -3,7 +3,7 @@
 type Operation = "multiply" | "add" | "divide";
 
 type Result = string | number;
-const calculator = (a: number, b: number, op: Operation): number | string => {
+const calculator = (a: number, b: number, op: Operation): Result => {
   if (op === "multiply") {
     return a * b;
   } else if (op === "add") {

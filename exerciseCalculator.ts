@@ -13,6 +13,29 @@ interface valuesExersice {
   target: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const parsedArgument = (hours: any, target: any): valuesExersice => {
+  if (!hours || !target) {
+    throw new Error("parameters missing");
+  }
+
+  if (!Array.isArray(hours)) {
+    throw new Error("malformatted parameters");
+  }
+
+  const validTarget = !isNaN(Number(target));
+  const validHours = hours.every((h) => !isNaN(Number(h)));
+
+  if (validTarget && validHours) {
+    return {
+      target: Number(target),
+      exercisesHours: hours.map((h) => Number(h)),
+    };
+  } else {
+    throw new Error("malformatted parameters");
+  }
+};
+
 const parsedArgumentExersice = (argument: string[]): valuesExersice => {
   if (argument.length < 4) throw new Error("Not enough arguments");
   // exerciseCalculator must accept inputs of different lengths.
@@ -52,11 +75,11 @@ const calculateRatingDescription = (rating: number): string => {
   }
 };
 
-const calculateExercises = (exercisesHours: number[], target: number): ResultExercise => {
+export const calculateExercises = (exercisesHours: number[], target: number): ResultExercise => {
   const trainingDays = exercisesHours.filter((hour) => hour !== 0).length;
   const periodLength = exercisesHours.length;
   const total = exercisesHours.reduce((total, day) => total + day, 0);
-  const average = total / trainingDays;
+  const average = total / periodLength;
   const rating = calculateRating(average, target);
 
   return {
