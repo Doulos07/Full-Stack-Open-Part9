@@ -3,7 +3,7 @@ import patientsServices from "../services/patients";
 
 const router = express.Router();
 
-router.get("/api/patients", (_req, res) => {
+router.get("/", (_req, res) => {
   res.json(patientsServices.getAllNonSsn());
 });
 

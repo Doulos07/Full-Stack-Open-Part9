@@ -3,7 +3,7 @@ import diagnoseServices from "../services/diagnoses";
 
 const router = express.Router();
 
-router.get("/api/diagnoses", (_req, res) => {
+router.get("/", (_req, res) => {
   res.json(diagnoseServices.getAll());
 });
 
