@@ -1,0 +1,10 @@
+POST  http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "Santiago Alvarez",
+    "dateOfBirth": "2004-04-30",
+    "ssn": "250470-444L",
+    "gender": "male",
+    "occupation": "Technician"
+}
