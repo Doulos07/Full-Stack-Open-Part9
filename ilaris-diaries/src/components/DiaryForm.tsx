@@ -1,4 +1,5 @@
-import type { NewDiaryEntry } from "../types";
+import type { NewDiaryEntry, Visibility, Weather } from "../types";
+import { weathers, visibilities } from "../types";
 import { useState } from "react";
 
 interface DiaryFormProps {
@@ -7,8 +8,8 @@ interface DiaryFormProps {
 
 const DiaryForm = ({ diaryCreation }: DiaryFormProps) => {
   const [date, setDate] = useState("");
-  const [visibility, setVisibility] = useState("");
-  const [weather, setWeather] = useState("");
+  const [visibility, setVisibility] = useState<Visibility>("ok");
+  const [weather, setWeather] = useState<Weather>("cloudy");
   const [comment, setComment] = useState("");
 
   const handleSubmit = (event: React.SyntheticEvent) => {
@@ -24,8 +25,8 @@ const DiaryForm = ({ diaryCreation }: DiaryFormProps) => {
     diaryCreation(newDiary);
 
     setDate("");
-    setVisibility("");
-    setWeather("");
+    setVisibility("ok");
+    setWeather("cloudy");
     setComment("");
   };
 
@@ -36,20 +37,28 @@ const DiaryForm = ({ diaryCreation }: DiaryFormProps) => {
         <div>
           <label>
             date
-            <input type="text" value={date} onChange={({ target }) => setDate(target.value)} />
+            <input type="date" value={date} onChange={({ target }) => setDate(target.value)} />
           </label>
         </div>
+
         <div>
-          <label>
-            visibility
-            <input type="text" value={visibility} onChange={({ target }) => setVisibility(target.value)} />
-          </label>
+          visibility:
+          {visibilities.map((v) => (
+            <label key={v}>
+              <input type="radio" name="visibility" value={v} checked={visibility === v} onChange={() => setVisibility(v)} />
+              {v}
+            </label>
+          ))}
         </div>
+
         <div>
-          <label>
-            weather
-            <input type="text" value={weather} onChange={({ target }) => setWeather(target.value)} />
-          </label>
+          weather:
+          {weathers.map((w) => (
+            <label key={w}>
+              <input type="radio" name="weather" value={w} checked={weather === w} onChange={() => setWeather(w)} />
+              {w}
+            </label>
+          ))}
         </div>
         <div>
           <label>
