@@ -6,7 +6,12 @@ import { Patient } from "../types";
 const router = express.Router();
 
 router.get("/", (_req, res) => {
-  res.json(patientsServices.getAllNonSsn());
+  res.json(patientsServices.getAllNonSensitive());
+});
+
+router.get("/:id", (req, res) => {
+  const patientId = req.params.id;
+  res.json(patientsServices.getPatientId(patientId));
 });
 
 router.post("/", (req, res) => {
