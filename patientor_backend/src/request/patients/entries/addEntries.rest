@@ -1,0 +1,45 @@
+### Hospital
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "description": "Patient fell off a ladder while fixing the roof.",
+  "date": "2023-05-12",
+  "specialist": "MD House",
+  "diagnosisCodes": ["S62.5", "M54.5"],
+  "type": "Hospital",
+  "discharge": {
+    "date": "2023-05-20",
+    "criteria": "Patient recovered fully, no complications."
+  }
+}
+
+### OccupationalHealthcare
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "description": "Routine occupational check due to chemical exposure.",
+  "date": "2023-06-01",
+  "specialist": "MD House",
+  "diagnosisCodes": ["Z57.1"],
+  "type": "OccupationalHealthcare",
+  "employerName": "Acme Corp",
+  "sickLeave": {
+    "startDate": "2023-06-01",
+    "endDate": "2023-06-10"
+  }
+}
+
+### HealthCheck
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "description": "Annual checkup, everything normal.",
+  "date": "2023-07-15",
+  "specialist": "MD House",
+  "diagnosisCodes": [],
+  "type": "HealthCheck",
+  "healthCheckRating": 0
+}

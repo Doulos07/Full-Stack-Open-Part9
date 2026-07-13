@@ -23,7 +23,6 @@ const EntryComp = ({ entry }: PropsEntry) => {
     fetchDiagnoses();
   }, []);
 
-  console.log(diagnoses);
   return (
     <div style={{ border: "solid", borderRadius: "5px", padding: "5px", marginBottom: "10px" }}>
       <p>

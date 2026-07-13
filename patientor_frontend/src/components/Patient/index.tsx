@@ -23,7 +23,6 @@ const Patient = () => {
 
   if (!patient) return null;
 
-  console.log(patient);
   return (
     <div>
       <h2>

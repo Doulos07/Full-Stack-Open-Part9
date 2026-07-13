@@ -1,3 +1,6 @@
+// Define omit especial para uniones // sin este omit se pueden perder algunas caracteristicas del tipo
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
 export enum Gender {
   Male = "male",
   Female = "female",
@@ -10,7 +13,7 @@ export interface Diagnose {
   latin?: string;
 }
 
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
@@ -26,7 +29,7 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3,
 }
 
-interface discharge {
+export interface Discharge {
   date: string;
   criteria: string;
 }
@@ -38,7 +41,7 @@ interface sickLeave {
 
 interface HospitalEntry extends BaseEntry {
   type: "Hospital";
-  discharge?: discharge;
+  discharge: Discharge;
 }
 
 interface HealthCheckEntry extends BaseEntry {
@@ -67,3 +70,7 @@ export interface Patient {
 export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;
 
 export type NewPatient = Omit<Patient, "id" | "entries">;
+
+export type NewBaseEntry = Omit<BaseEntry, "id">;
+
+export type NewEntry = UnionOmit<Entry, "id">;
