@@ -1,62 +1,9 @@
 import { useEffect, useState } from "react";
 import { Diagnose, Entry } from "../../types";
 import diagnoseService from "../../services/diagnoses";
+import SpecificEntry from "./SpecificEntry";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 
-const assertNever = (value: never): never => {
-  throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
-};
-/*
-switch (entry.type) {
-    case "Hospital":
-      return (
-        <div>
-          <p>
-            {entry.date} {entry.description}
-          </p>
-          <ul>
-            {diagnoses.map((diagnose) => (
-              <li key={diagnose.code}>
-                {diagnose.code} {diagnose.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    case "OccupationalHealthcare":
-      return (
-        <div>
-          <p>
-            {entry.date} {entry.description}
-          </p>
-          <ul>
-            {diagnoses.map((diagnose) => (
-              <li key={diagnose.code}>
-                {diagnose.code} {diagnose.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    case "HealthCheck":
-      return (
-        <div>
-          <p>
-            {entry.date} {entry.description}
-          </p>
-          <ul>
-            {diagnoses.map((diagnose) => (
-              <li key={diagnose.code}>
-                {diagnose.code} {diagnose.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    default:
-      return assertNever(entry);
-  }
-
-*/
 interface PropsEntrys {
   entrys: Entry[];
 }
@@ -78,10 +25,14 @@ const EntryComp = ({ entry }: PropsEntry) => {
 
   console.log(diagnoses);
   return (
-    <div>
+    <div style={{ border: "solid", borderRadius: "5px", padding: "5px", marginBottom: "10px" }}>
       <p>
-        {entry.date} {entry.description}
+        {entry.date} <MedicalServicesIcon />
       </p>
+      <p>{entry.description}</p>
+      <SpecificEntry entry={entry} />
+      {diagnoses.length > 0 && <h4>Diagnoses</h4>}
+
       <ul>
         {diagnoses.map((diagnose) => (
           <li key={diagnose.code}>
@@ -96,7 +47,7 @@ const EntryComp = ({ entry }: PropsEntry) => {
 const PatientEntry = ({ entrys }: PropsEntrys) => {
   return (
     <div>
-      <h4>entries</h4>
+      <h3>entries</h3>
 
       {entrys.map((e) => (
         <EntryComp entry={e} key={e.id} />
