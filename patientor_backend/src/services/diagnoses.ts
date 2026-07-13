@@ -3,4 +3,5 @@ import { Diagnose } from "../types";
 
 const getAll = (): Diagnose[] => diagnosesData;
 
-export default { getAll };
+const getCode = (code: string): Diagnose | undefined => diagnosesData.find((d) => d.code === code);
+export default { getAll, getCode };

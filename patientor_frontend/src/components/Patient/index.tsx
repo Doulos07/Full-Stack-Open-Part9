@@ -1,8 +1,9 @@
 import { MaleOutlined, FemaleOutlined, TransgenderOutlined } from "@mui/icons-material";
 import { useState, useEffect } from "react";
-import patientService from "../services/patients";
-import type { Patient } from "../types";
+import patientService from "../../services/patients";
+import type { Patient } from "../../types";
 import { useParams } from "react-router-dom";
+import PatientEntry from "./PatientEntry";
 
 const Patient = () => {
   const patientID = useParams().id;
@@ -31,6 +32,8 @@ const Patient = () => {
 
       <p>ssh: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
+
+      <PatientEntry entrys={patient.entries} />
     </div>
   );
 };
