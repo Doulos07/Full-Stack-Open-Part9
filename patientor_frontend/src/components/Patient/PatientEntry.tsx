@@ -3,6 +3,7 @@ import { Diagnose, Entry } from "../../types";
 import diagnoseService from "../../services/diagnoses";
 import SpecificEntry from "./SpecificEntry";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import { Typography } from "@mui/material";
 
 interface PropsEntrys {
   entrys: Entry[];
@@ -46,7 +47,9 @@ const EntryComp = ({ entry }: PropsEntry) => {
 const PatientEntry = ({ entrys }: PropsEntrys) => {
   return (
     <div>
-      <h3>entries</h3>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        entries
+      </Typography>
 
       {entrys.map((e) => (
         <EntryComp entry={e} key={e.id} />
