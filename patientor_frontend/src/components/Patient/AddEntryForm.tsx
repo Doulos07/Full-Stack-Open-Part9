@@ -1,28 +1,29 @@
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { SyntheticEvent, useState } from "react";
 import { Entry, EntryType, NewBaseEntry, NewEntry } from "../../types";
-import { MenuItem, Select } from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
 import HealthCheckFields from "./EntryTypes/HealthCheckFields";
 import HospitalFields from "./EntryTypes/HospitalFields";
 import OccupationalHealthcareFields from "./EntryTypes/OccupationalHealthcareFields";
+import BaseEntry from "./EntryTypes/BaseEntry";
 
 interface Props {
-  addEntry: (entry: NewEntry) => void; // Nota: Acá vas a tener que usar el tipo Union completo, no solo HealthCheck
+  addEntry: (entry: NewEntry) => void;
+  diagnosisCodes: string[];
 }
 const assertNever = (value: never): never => {
   throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
 };
 
-const AddEntryForm = ({ addEntry }: Props) => {
+const AddEntryForm = ({ addEntry, diagnosisCodes }: Props) => {
   // BaseEntry states...
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<Dayjs | null>(dayjs());
   const [specialist, setSpecialist] = useState("");
-  const [code, setCode] = useState("");
+  const [codes, setCodes] = useState<string[]>([]);
 
   // TYPE ENTRYS
   const entryTypes: EntryType[] = ["HealthCheck", "Hospital", "OccupationalHealthcare"];
@@ -30,7 +31,7 @@ const AddEntryForm = ({ addEntry }: Props) => {
   const caseType = type as Entry["type"];
 
   // Hospital states...
-  const [dateHospital, setDateHospital] = useState("");
+  const [dateHospital, setDateHospital] = useState<Dayjs | null>(dayjs());
   const [criteria, setCriteria] = useState("");
 
   // HealthCheck states...
@@ -38,20 +39,20 @@ const AddEntryForm = ({ addEntry }: Props) => {
 
   // Occupational states...
   const [employerName, setEmployerName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
 
   const resetAll = (): void => {
     setDescription("");
-    setDate("");
+    setDate(dayjs());
     setSpecialist("");
-    setCode("");
-    setDateHospital("");
+    setCodes([]);
+    setDateHospital(dayjs());
     setCriteria("");
     setRating(0);
     setEmployerName("");
-    setStartDate("");
-    setEndDate("");
+    setStartDate(dayjs());
+    setEndDate(dayjs());
   };
 
   const onSubmit = (event: SyntheticEvent): void => {
@@ -59,9 +60,9 @@ const AddEntryForm = ({ addEntry }: Props) => {
 
     const formValues: NewBaseEntry = {
       description,
-      date,
+      date: String(date),
       specialist,
-      diagnosisCodes: code.split(","),
+      diagnosisCodes: codes,
     };
 
     switch (caseType) {
@@ -76,7 +77,7 @@ const AddEntryForm = ({ addEntry }: Props) => {
         addEntry({
           ...formValues,
           discharge: {
-            date: dateHospital,
+            date: String(dateHospital),
             criteria,
           },
           type: "Hospital",
@@ -87,8 +88,8 @@ const AddEntryForm = ({ addEntry }: Props) => {
           ...formValues,
           employerName,
           sickLeave: {
-            startDate,
-            endDate,
+            startDate: String(startDate),
+            endDate: String(endDate),
           },
           type: "OccupationalHealthcare",
         });
@@ -97,7 +98,7 @@ const AddEntryForm = ({ addEntry }: Props) => {
         return assertNever(caseType);
     }
 
-    //resetAll();
+    resetAll();
   };
 
   const renderSpecificFields = () => {
@@ -134,40 +135,21 @@ const AddEntryForm = ({ addEntry }: Props) => {
 
       <form onSubmit={onSubmit}>
         <Stack spacing={2}>
-          {/* Campos Base compartidos */}
-          <TextField
-            fullWidth
-            label="description"
-            variant="outlined"
-            value={description}
-            onChange={({ target }) => setDescription(target.value)}
+          <BaseEntry
+            description={description}
+            setDescription={setDescription}
+            date={date}
+            setDate={setDate}
+            specialist={specialist}
+            setSpecialist={setSpecialist}
+            codes={codes}
+            setCodes={setCodes}
+            type={type}
+            setType={setType}
+            diagnosisCodes={diagnosisCodes}
+            entryTypes={entryTypes}
           />
-          <TextField
-            fullWidth
-            label="date"
-            variant="outlined"
-            placeholder="YYYY-MM-DD"
-            value={date}
-            onChange={({ target }) => setDate(target.value)}
-          />
-          <TextField
-            fullWidth
-            label="specialist"
-            variant="outlined"
-            value={specialist}
-            onChange={({ target }) => setSpecialist(target.value)}
-          />
-          <TextField fullWidth label="diagnosis codes" variant="outlined" value={code} onChange={({ target }) => setCode(target.value)} />
 
-          <Select value={type} label="Type" onChange={({ target }) => setType(target.value as EntryType)}>
-            {entryTypes.map((entryType) => (
-              <MenuItem key={entryType} value={entryType}>
-                {entryType}
-              </MenuItem>
-            ))}
-          </Select>
-
-          {/* Renderizado condicional usando la función */}
           {renderSpecificFields()}
 
           <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ pt: 1 }}>

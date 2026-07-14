@@ -1,10 +1,13 @@
 // HealthCheckFields.tsx
 import { Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { Dayjs } from "dayjs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 interface Props {
-  dateHospital: string;
-  setDateHospital: (value: string) => void;
+  dateHospital: Dayjs | null;
+  setDateHospital: (value: Dayjs | null) => void;
 
   criteria: string;
   setCriteria: (value: string) => void;
@@ -14,14 +17,10 @@ const HospitalFields = (props: Props) => {
   return (
     <>
       <Stack spacing={2}>
-        <TextField
-          fullWidth
-          label="Discharge Date"
-          variant="outlined"
-          placeholder="YYYY-MM-DD"
-          value={props.dateHospital}
-          onChange={({ target }) => props.setDateHospital(target.value)}
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker label="Date discharge" value={props.dateHospital} onChange={(newDate) => props.setDateHospital(newDate)} />
+        </LocalizationProvider>
+
         <TextField
           fullWidth
           label="Criteria"

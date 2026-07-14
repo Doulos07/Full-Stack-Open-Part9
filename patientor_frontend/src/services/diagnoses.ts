@@ -9,4 +9,8 @@ const getCode = async (code: string) => {
   return data;
 };
 
-export default { getCode };
+const getAll = async () => {
+  const { data } = await axios.get<Diagnose[]>(baseUrl);
+  return data;
+};
+export default { getCode, getAll };

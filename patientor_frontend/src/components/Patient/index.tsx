@@ -1,6 +1,7 @@
 import { MaleOutlined, FemaleOutlined, TransgenderOutlined } from "@mui/icons-material";
 import { useState, useEffect, useRef } from "react";
 import patientService from "../../services/patients";
+import diagnoseService from "../../services/diagnoses";
 import type { NewEntry, Patient } from "../../types";
 import { useParams } from "react-router-dom";
 import PatientEntry from "./PatientEntry";
@@ -19,6 +20,7 @@ const Patient = () => {
   const patientID = useParams().id;
   const [patient, setPatient] = useState<Patient | undefined>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
   const ref = useRef(null);
 
   useEffect(() => {
@@ -26,6 +28,10 @@ const Patient = () => {
       patientService.getId(patientID).then((patient) => setPatient(patient));
     }
   }, [patientID]);
+
+  useEffect(() => {
+    diagnoseService.getAll().then((diagnosisAll) => setDiagnosisCodes(diagnosisAll.map((d) => d.code)));
+  }, []);
 
   const genderIcons = {
     male: <MaleOutlined fontSize="small" />,
@@ -76,7 +82,7 @@ const Patient = () => {
       <Box sx={{ mb: 3 }}>
         <Box sx={{ mb: 3 }}>
           <Toggleable ref={ref} showLabel="New entry" hideLabel="CANCEL">
-            <AddEntryForm addEntry={addEntry} />
+            <AddEntryForm addEntry={addEntry} diagnosisCodes={diagnosisCodes} />
           </Toggleable>
         </Box>
       </Box>

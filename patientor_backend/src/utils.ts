@@ -97,13 +97,12 @@ export const toNewPatient = (object: unknown): NewPatient => {
 };
 
 // =============================== PARSED ENTRY ===============================
-const parseDiagnosisCodes = (object: unknown): Array<Diagnose["code"]> => {
-  if (!object || typeof object !== "object" || !("diagnosisCodes" in object)) {
-    // we will just trust the data to be in correct form
+const parseDiagnosisCodes = (diagnosisCodes: unknown): Array<Diagnose["code"]> => {
+  if (!diagnosisCodes || !Array.isArray(diagnosisCodes)) {
     return [] as Array<Diagnose["code"]>;
   }
 
-  return object.diagnosisCodes as Array<Diagnose["code"]>;
+  return diagnosisCodes as Array<Diagnose["code"]>;
 };
 
 const parsedDescription = (description: unknown): string => {
