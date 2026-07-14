@@ -1,6 +1,9 @@
-import { Discharge, Diagnose, Gender, NewEntry, NewPatient, HealthCheckRating, NewBaseEntry } from "./types";
+import { Discharge, Diagnose, Gender, NewEntry, NewPatient, HealthCheckRating, NewBaseEntry, Entry } from "./types";
 
 // =============================== VALIDATION TYPE ===============================
+const assertNever = (value: never): never => {
+  throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
+};
 
 const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
@@ -182,7 +185,8 @@ export const toNewEntry = (object: unknown): NewEntry => {
       diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
     };
 
-    switch (object.type) {
+    const entryType = object.type as Entry["type"];
+    switch (entryType) {
       case "Hospital":
         if (!("discharge" in object)) {
           throw new Error("Incorrect data: discharge missing");
@@ -211,6 +215,8 @@ export const toNewEntry = (object: unknown): NewEntry => {
           type: "HealthCheck",
           healthCheckRating: parseHealthCheckRating(object.healthCheckRating),
         };
+      default:
+        assertNever(entryType);
     }
   }
 

@@ -1,20 +1,19 @@
 import { Button } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
-import { useImperativeHandle, useState } from "react";
+import { useImperativeHandle, forwardRef, useState } from "react";
 
 export interface ToggleableHandle {
   toggleVisibile: () => void;
 }
 
 interface Props {
-  ref: React.RefObject<ToggleableHandle | null>;
   children: React.ReactNode;
   showLabel?: string;
   hideLabel?: string;
 }
 
-const Toggleable = ({ ref, children, showLabel = "SHOW", hideLabel = "CANCEL" }: Props) => {
+const Toggleable = forwardRef<ToggleableHandle, Props>(({ children, showLabel = "SHOW", hideLabel = "CANCEL" }, ref) => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisibile = (): void => setVisible(!visible);
@@ -47,6 +46,6 @@ const Toggleable = ({ ref, children, showLabel = "SHOW", hideLabel = "CANCEL" }:
       )}
     </div>
   );
-};
+});
 
 export default Toggleable;

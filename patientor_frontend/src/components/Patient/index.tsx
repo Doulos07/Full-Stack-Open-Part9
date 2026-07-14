@@ -1,12 +1,11 @@
 import { MaleOutlined, FemaleOutlined, TransgenderOutlined } from "@mui/icons-material";
 import { useState, useEffect, useRef } from "react";
 import patientService from "../../services/patients";
-import type { Patient } from "../../types";
+import type { NewEntry, Patient } from "../../types";
 import { useParams } from "react-router-dom";
 import PatientEntry from "./PatientEntry";
 import AddEntryForm from "./AddEntryForm";
 import Toggleable from "../Toggleable";
-import { NewEntryHealthCheckEntry } from "../../types";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -34,7 +33,7 @@ const Patient = () => {
     other: <TransgenderOutlined fontSize="small" />,
   };
 
-  const addEntry = (data: NewEntryHealthCheckEntry): void => {
+  const addEntry = (data: NewEntry): void => {
     if (patientID && patient) {
       patientService
         .addEntries(patientID, data)
